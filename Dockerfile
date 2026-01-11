@@ -5,21 +5,14 @@ FROM ${BUILD_FROM}
 RUN apk add --no-cache \
     python3 \
     py3-pip \
-    nodejs \
-    npm \
     bash \
     curl \
     jq \
-    git \
     ffmpeg
 
-# Install Claude Code CLI
-RUN npm install -g @anthropic-ai/claude-code
-
-# Install Python dependencies
-RUN pip3 install --no-cache-dir \
+# Install Python dependencies with --break-system-packages for PEP 668
+RUN pip3 install --no-cache-dir --break-system-packages \
     aiohttp \
-    asyncio \
     pyyaml \
     pillow \
     requests

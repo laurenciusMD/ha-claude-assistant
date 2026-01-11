@@ -1,5 +1,5 @@
 name: Claude Assistant
-version: "0.1.0"
+version: "0.1.1"
 slug: claude_assistant
 description: Claude Code CLI Integration for Home Assistant with image analysis
 url: https://github.com/anthropics/claude-code
