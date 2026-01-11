@@ -28,7 +28,6 @@ schema:
   anthropic_api_key: str
   log_level: list(debug|info|warning|error)
   enable_image_analysis: bool
-image: ghcr.io/local/claude-assistant
 map:
   - media:rw
   - share:rw
