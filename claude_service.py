@@ -38,10 +38,15 @@ class ClaudeService:
         self.app.router.add_post('/api/analyze_snapshot', self.handle_analyze_snapshot)
         self.app.router.add_get('/api/health', self.handle_health)
 
-        # Chat UI routes
+        # Test endpoint
+        self.app.router.add_get('/test', self.handle_test)
+
+        # Chat UI routes (must be last to not override other routes)
         self.app.router.add_get('/', self.handle_index)
         self.app.router.add_get('/chat', self.handle_index)
         self.app.router.add_get('/index.html', self.handle_index)
+
+        logger.info("✓ Routes registered: /api/*, /, /chat, /index.html, /test")
 
         # Find www path and store it
         possible_paths = [
@@ -70,19 +75,29 @@ class ClaudeService:
         else:
             logger.error("✗ No www directory found! Chat UI will not be available.")
 
+    async def handle_test(self, request):
+        """Test endpoint to verify routing works"""
+        return web.Response(text='Test endpoint works! Routes are functioning.', content_type='text/plain')
+
     async def handle_index(self, request):
         """Serve chat UI"""
         if self.www_path:
             chat_file = self.www_path / 'chat.html'
             if chat_file.exists():
-                logger.info(f"Serving chat UI from: {chat_file}")
-                return web.FileResponse(
-                    chat_file,
-                    headers={
-                        'Content-Type': 'text/html; charset=utf-8',
-                        'Cache-Control': 'no-cache'
-                    }
-                )
+                try:
+                    # Read and serve HTML directly
+                    with open(chat_file, 'r', encoding='utf-8') as f:
+                        html_content = f.read()
+                    logger.info(f"✓ Serving chat UI from: {chat_file}")
+                    return web.Response(
+                        text=html_content,
+                        content_type='text/html',
+                        charset='utf-8',
+                        headers={'Cache-Control': 'no-cache'}
+                    )
+                except Exception as e:
+                    logger.error(f"Error reading chat.html: {e}")
+                    return web.Response(text=f'Error reading chat UI: {e}', status=500)
             else:
                 logger.error(f"chat.html not found at: {chat_file}")
                 return web.Response(text=f'chat.html not found at {chat_file}', status=404)
