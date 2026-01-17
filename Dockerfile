@@ -24,20 +24,12 @@ RUN pip3 install --no-cache-dir --break-system-packages \
     requests
 
 # Install Claude CLI from official npm package
+# The package has a 'bin: claude' field that automatically creates /usr/local/bin/claude
 ENV NPM_CONFIG_UNSAFE_PERM=true
-RUN npm install -g @anthropic-ai/claude-code@latest && \
-    CLAUDE_PATH=$(npm root -g)/@anthropic-ai/claude-code && \
-    echo "Claude installed at: $CLAUDE_PATH" && \
-    ls -la "$CLAUDE_PATH" && \
-    chmod -R 755 "$CLAUDE_PATH" && \
-    chmod +x "$CLAUDE_PATH/cli.js"
+RUN npm install -g @anthropic-ai/claude-code@latest
 
-# Copy wrapper script for Claude CLI
-COPY claude-wrapper.sh /usr/local/bin/claude
-RUN chmod +x /usr/local/bin/claude && cat /usr/local/bin/claude
-
-# Verify Claude CLI is accessible
-RUN which claude && (claude --version 2>&1 | head -3 || echo "Claude installed (needs auth)")
+# Verify Claude CLI installation
+RUN which claude && ls -la $(which claude)
 
 # Copy service files
 COPY run.sh /

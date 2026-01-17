@@ -100,12 +100,11 @@ fi
 
 bashio::log.info "Verifying Claude CLI installation..."
 
-CLAUDE_VERSION=$(claude --version 2>&1 | head -1)
-if [ $? -eq 0 ]; then
-    bashio::log.info "✓ Claude CLI ready: $CLAUDE_VERSION"
+if which claude > /dev/null 2>&1; then
+    CLAUDE_PATH=$(which claude)
+    bashio::log.info "✓ Claude CLI found at: $CLAUDE_PATH"
 else
-    bashio::log.error "✗ Claude CLI not working!"
-    bashio::log.error "Output: $CLAUDE_VERSION"
+    bashio::log.error "✗ Claude CLI not found in PATH!"
     exit 1
 fi
 
