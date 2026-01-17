@@ -30,13 +30,14 @@ RUN npm install -g @anthropic-ai/claude-code@latest && \
     echo "Claude installed at: $CLAUDE_PATH" && \
     ls -la "$CLAUDE_PATH" && \
     chmod -R 755 "$CLAUDE_PATH" && \
-    chmod +x "$CLAUDE_PATH/cli.js" && \
-    echo '#!/bin/sh' > /usr/local/bin/claude && \
-    echo "exec node $CLAUDE_PATH/cli.js \"\$@\"" >> /usr/local/bin/claude && \
-    chmod +x /usr/local/bin/claude
+    chmod +x "$CLAUDE_PATH/cli.js"
+
+# Copy wrapper script for Claude CLI
+COPY claude-wrapper.sh /usr/local/bin/claude
+RUN chmod +x /usr/local/bin/claude && cat /usr/local/bin/claude
 
 # Verify Claude CLI is accessible
-RUN which claude && cat /usr/local/bin/claude && (claude --version 2>&1 | head -3 || echo "Claude installed (needs auth)")
+RUN which claude && (claude --version 2>&1 | head -3 || echo "Claude installed (needs auth)")
 
 # Copy service files
 COPY run.sh /
