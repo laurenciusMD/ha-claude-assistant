@@ -264,10 +264,15 @@
     </div>
 
     <script>
+        // Get base path for API calls (works with Ingress)
+        const BASE_PATH = window.location.pathname.replace(/\/$/, '');
+
         const chatContainer = document.getElementById('chatContainer');
         const messageInput = document.getElementById('messageInput');
         const sendButton = document.getElementById('sendButton');
         const statusText = document.getElementById('statusText');
+
+        console.log('Base path:', BASE_PATH);
 
         // Auto-resize textarea
         messageInput.addEventListener('input', function() {
@@ -356,7 +361,7 @@
             showLoading();
 
             try {
-                const response = await fetch('/api/chat', {
+                const response = await fetch(`${BASE_PATH}/api/chat`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -391,7 +396,7 @@
         }
 
         // Check health on load
-        fetch('/api/health')
+        fetch(`${BASE_PATH}/api/health`)
             .then(r => r.json())
             .then(data => {
                 if (data.status === 'ok') {
