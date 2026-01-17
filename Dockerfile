@@ -24,14 +24,19 @@ RUN pip3 install --no-cache-dir --break-system-packages \
     requests
 
 # Install Claude CLI from official npm package
-# Using --unsafe-perm for Alpine compatibility
 ENV NPM_CONFIG_UNSAFE_PERM=true
-RUN npm install -g --unsafe-perm @anthropic-ai/claude-code@latest && \
-    chmod -R 755 /usr/lib/node_modules/@anthropic-ai/claude-code && \
-    ln -sf /usr/lib/node_modules/@anthropic-ai/claude-code/bin/claude /usr/local/bin/claude
+RUN npm install -g @anthropic-ai/claude-code@latest && \
+    CLAUDE_PATH=$(npm root -g)/@anthropic-ai/claude-code && \
+    echo "Claude installed at: $CLAUDE_PATH" && \
+    ls -la "$CLAUDE_PATH" && \
+    chmod -R 755 "$CLAUDE_PATH" && \
+    chmod +x "$CLAUDE_PATH/cli.js" && \
+    echo '#!/bin/sh' > /usr/local/bin/claude && \
+    echo "exec node $CLAUDE_PATH/cli.js \"\$@\"" >> /usr/local/bin/claude && \
+    chmod +x /usr/local/bin/claude
 
 # Verify Claude CLI is accessible
-RUN which claude && ls -la /usr/local/bin/claude && claude --version || echo "Claude installed (needs auth)"
+RUN which claude && cat /usr/local/bin/claude && (claude --version 2>&1 | head -3 || echo "Claude installed (needs auth)")
 
 # Copy service files
 COPY run.sh /
