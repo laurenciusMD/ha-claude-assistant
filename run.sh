@@ -22,10 +22,25 @@ bashio::log.info "Image analysis: ${ENABLE_IMAGE_ANALYSIS}"
 bashio::log.info "Credentials location: ${HOME}/.claude/"
 
 # ============================================================================
-# Check Claude CLI Authentication
+# Setup credentials from config (if provided)
 # ============================================================================
 
+mkdir -p "${HOME}/.claude"
 CREDENTIALS_FILE="${HOME}/.claude/.credentials.json"
+
+# Check if credentials are provided in config
+if bashio::config.has_value 'claude_credentials'; then
+    CREDS=$(bashio::config 'claude_credentials')
+    if [ -n "$CREDS" ]; then
+        bashio::log.info "✓ Using credentials from addon configuration"
+        echo "$CREDS" > "$CREDENTIALS_FILE"
+        chmod 600 "$CREDENTIALS_FILE"
+    fi
+fi
+
+# ============================================================================
+# Check Claude CLI Authentication
+# ============================================================================
 
 if [ ! -f "$CREDENTIALS_FILE" ]; then
     bashio::log.warning "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
