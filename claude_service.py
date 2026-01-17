@@ -248,8 +248,8 @@ Konzentriere dich NUR auf die tatsächliche Szene und beantworte diese Frage:
     async def run_claude_cli(self, prompt, attach_file=None):
         """Execute Claude CLI command"""
         try:
-            # Build command with permissions bypass for file access
-            cmd = [CLAUDE_CLI, '--print', '--dangerously-skip-permissions']
+            # Build command - removed --dangerously-skip-permissions (doesn't work with root)
+            cmd = [CLAUDE_CLI, '--print']
 
             # Add file reference in prompt if provided
             if attach_file:
