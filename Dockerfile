@@ -34,6 +34,7 @@ RUN which claude && ls -la $(which claude)
 # Copy service files
 COPY run.sh /
 COPY claude_service.py /usr/local/bin/
+COPY www /usr/local/bin/www
 RUN chmod a+x /run.sh /usr/local/bin/claude_service.py
 
 # Create directory for Claude credentials (will be mounted as volume)

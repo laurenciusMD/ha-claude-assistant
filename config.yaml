@@ -1,5 +1,5 @@
 name: Claude Assistant
-version: "0.2.6"
+version: "0.3.0"
 slug: claude_assistant
 description: Claude Code CLI Integration for Home Assistant - No API costs, uses Claude Pro tokens
 url: https://github.com/anthropics/claude-code
@@ -16,6 +16,10 @@ hassio_api: true
 hassio_role: default
 homeassistant_api: true
 host_network: false
+ingress: true
+ingress_port: 8099
+panel_icon: mdi:robot
+panel_title: Claude Chat
 ports:
   8099/tcp: 8099
 ports_description:

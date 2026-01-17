@@ -32,10 +32,25 @@ class ClaudeService:
 
     def setup_routes(self):
         """Setup HTTP routes"""
+        # API endpoints
         self.app.router.add_post('/api/chat', self.handle_chat)
         self.app.router.add_post('/api/analyze_image', self.handle_analyze_image)
         self.app.router.add_post('/api/analyze_snapshot', self.handle_analyze_snapshot)
         self.app.router.add_get('/api/health', self.handle_health)
+
+        # Static files for chat UI
+        www_path = Path(__file__).parent / 'www'
+        if www_path.exists():
+            self.app.router.add_static('/static', www_path)
+            self.app.router.add_get('/', self.handle_index)
+            logger.info(f"Serving static files from: {www_path}")
+
+    async def handle_index(self, request):
+        """Serve chat UI"""
+        www_path = Path(__file__).parent / 'www' / 'chat.html'
+        if www_path.exists():
+            return web.FileResponse(www_path)
+        return web.Response(text='Chat UI not found', status=404)
 
     async def start(self):
         """Start the service"""
