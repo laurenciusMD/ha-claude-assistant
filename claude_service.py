@@ -38,21 +38,24 @@ class ClaudeService:
         self.app.router.add_post('/api/analyze_snapshot', self.handle_analyze_snapshot)
         self.app.router.add_get('/api/health', self.handle_health)
 
-        # Static files for chat UI
-        # Check multiple possible paths
+        # Chat UI routes
+        self.app.router.add_get('/', self.handle_index)
+        self.app.router.add_get('/chat', self.handle_index)
+        self.app.router.add_get('/index.html', self.handle_index)
+
+        # Find www path and store it
         possible_paths = [
             Path(__file__).parent / 'www',
             Path('/usr/local/bin/www'),
             Path('/www'),
         ]
 
-        www_path = None
+        self.www_path = None
         for p in possible_paths:
             logger.info(f"Checking for www directory at: {p}")
             if p.exists() and p.is_dir():
-                www_path = p
+                self.www_path = p
                 logger.info(f"✓ Found www directory at: {p}")
-                # List contents
                 try:
                     contents = list(p.iterdir())
                     logger.info(f"Contents: {[str(f.name) for f in contents]}")
@@ -62,31 +65,30 @@ class ClaudeService:
             else:
                 logger.warning(f"✗ Not found or not a directory: {p}")
 
-        if www_path:
-            self.app.router.add_static('/static', www_path)
-            self.app.router.add_get('/', self.handle_index)
-            logger.info(f"✓ Serving static files from: {www_path}")
+        if self.www_path:
+            logger.info(f"✓ Chat UI will be served from: {self.www_path}")
         else:
             logger.error("✗ No www directory found! Chat UI will not be available.")
-            logger.info(f"Script location: {__file__}")
-            logger.info(f"Script parent: {Path(__file__).parent}")
 
     async def handle_index(self, request):
         """Serve chat UI"""
-        # Try multiple paths
-        possible_paths = [
-            Path(__file__).parent / 'www' / 'chat.html',
-            Path('/usr/local/bin/www/chat.html'),
-            Path('/www/chat.html'),
-        ]
-
-        for chat_path in possible_paths:
-            if chat_path.exists():
-                logger.info(f"Serving chat UI from: {chat_path}")
-                return web.FileResponse(chat_path)
-
-        logger.error("Chat UI file not found!")
-        return web.Response(text=f'Chat UI not found. Searched: {[str(p) for p in possible_paths]}', status=404)
+        if self.www_path:
+            chat_file = self.www_path / 'chat.html'
+            if chat_file.exists():
+                logger.info(f"Serving chat UI from: {chat_file}")
+                return web.FileResponse(
+                    chat_file,
+                    headers={
+                        'Content-Type': 'text/html; charset=utf-8',
+                        'Cache-Control': 'no-cache'
+                    }
+                )
+            else:
+                logger.error(f"chat.html not found at: {chat_file}")
+                return web.Response(text=f'chat.html not found at {chat_file}', status=404)
+        else:
+            logger.error("www_path not set!")
+            return web.Response(text='Chat UI directory not found', status=404)
 
     async def start(self):
         """Start the service"""
