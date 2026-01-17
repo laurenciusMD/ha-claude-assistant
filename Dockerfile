@@ -9,8 +9,7 @@ RUN apk add --no-cache \
     curl \
     jq \
     ffmpeg \
-    nodejs \
-    npm
+    ca-certificates
 
 # Install Python dependencies with --break-system-packages for PEP 668
 RUN pip3 install --no-cache-dir --break-system-packages \
@@ -19,10 +18,14 @@ RUN pip3 install --no-cache-dir --break-system-packages \
     pillow \
     requests
 
-# Install Claude CLI globally via npm
-# This installs the official Claude Code CLI without API costs
-RUN npm install -g @anthropic-ai/claude-code && \
-    ln -sf /usr/lib/node_modules/@anthropic-ai/claude-code/bin/claude /usr/local/bin/claude
+# Install Claude CLI
+COPY install-claude.sh /tmp/
+RUN chmod +x /tmp/install-claude.sh && \
+    /tmp/install-claude.sh && \
+    rm /tmp/install-claude.sh
+
+# Verify installation
+RUN which claude && (claude --version 2>&1 || echo "Claude CLI ready (needs auth)")
 
 # Copy service files
 COPY run.sh /
