@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Circle -->
+  <circle cx="128" cy="128" r="120" fill="#2D2D2D"/>
+
+  <!-- Outer Ring (Claude Brand Color) -->
+  <circle cx="128" cy="128" r="120" fill="none" stroke="#D97706" stroke-width="8"/>
+
+  <!-- Terminal Window Background -->
+  <rect x="48" y="68" width="160" height="120" rx="8" fill="#1A1A1A"/>
+
+  <!-- Terminal Header Bar -->
+  <rect x="48" y="68" width="160" height="24" rx="8" fill="#374151"/>
+  <rect x="48" y="80" width="160" height="12" fill="#374151"/>
+
+  <!-- Terminal Control Buttons -->
+  <circle cx="64" cy="80" r="4" fill="#EF4444"/>
+  <circle cx="78" cy="80" r="4" fill="#F59E0B"/>
+  <circle cx="92" cy="80" r="4" fill="#10B981"/>
+
+  <!-- Terminal Content - CLI Prompt -->
+  <text x="58" y="114" font-family="monospace" font-size="14" fill="#10B981" font-weight="bold">$</text>
+  <text x="72" y="114" font-family="monospace" font-size="14" fill="#E5E7EB">claude</text>
+
+  <!-- CLI Cursor -->
+  <rect x="118" y="104" width="8" height="14" fill="#10B981" opacity="0.8"/>
+
+  <!-- Code Lines (stylized) -->
+  <line x1="58" y1="132" x2="140" y2="132" stroke="#6B7280" stroke-width="2" stroke-linecap="round"/>
+  <line x1="58" y1="148" x2="180" y2="148" stroke="#6B7280" stroke-width="2" stroke-linecap="round"/>
+  <line x1="58" y1="164" x2="120" y2="164" stroke="#6B7280" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Claude "C" Symbol (stylized) -->
+  <path d="M 178 140 Q 178 120, 158 120 Q 138 120, 138 140 Q 138 160, 158 160 Q 168 160, 173 155"
+        fill="none" stroke="#D97706" stroke-width="6" stroke-linecap="round"/>
+
+  <!-- Small "Pro" Badge -->
+  <rect x="170" y="165" width="30" height="16" rx="8" fill="#D97706"/>
+  <text x="176" y="176" font-family="Arial" font-size="10" fill="#1A1A1A" font-weight="bold">Pro</text>
+
+  <!-- Bottom Accent Line -->
+  <line x1="48" y1="220" x2="208" y2="220" stroke="#10B981" stroke-width="4" stroke-linecap="round" opacity="0.6"/>
+</svg>
