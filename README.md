@@ -1,35 +1,73 @@
 # Claude Assistant - Home Assistant Addon
 
-Claude Code CLI Integration für Home Assistant mit Bildanalyse.
+**Claude Code CLI Integration für Home Assistant - Keine API-Kosten!**
 
-## Features
+Nutzt deine Claude Pro inkludierten Tokens statt pay-per-use API.
 
-- ✅ **Claude Code CLI** Integration
+## ✨ Hauptfeatures
+
+- ✅ **Keine API-Kosten** - Nutzt Claude CLI mit deinem Pro-Account
+- ✅ **Einfache OAuth-Setup** - Link klicken, anmelden, fertig!
 - ✅ **Bildanalyse** von Frigate Snapshots
 - ✅ **Chat Interface** über REST API
 - ✅ **Home Assistant Services** für Automatisierungen
 - ✅ **Direkter Zugriff** auf Frigate Media
 
-## Installation
+## 🚀 Installation
 
-1. **Addon Repository hinzufügen:**
-   - Gehe zu Supervisor → Add-on Store → ⋮ → Repositories
-   - Füge hinzu: `/addons/claude-assistant` (lokal)
+### 1. Addon Repository hinzufügen
 
-2. **Addon installieren:**
-   - Suche "Claude Assistant" im Add-on Store
-   - Klicke "Install"
+- Gehe zu **Supervisor → Add-on Store → ⋮ → Repositories**
+- Füge hinzu: `https://github.com/yourusername/ha-claude-addon`
 
-3. **Konfiguration:**
-   ```yaml
-   anthropic_api_key: "sk-ant-..."
-   log_level: "info"
-   enable_image_analysis: true
-   ```
+### 2. Addon installieren
 
-4. **Starten:**
-   - Start on boot: aktivieren
-   - Start
+- Suche "Claude Assistant" im Add-on Store
+- Klicke **Install**
+
+### 3. Konfiguration
+
+**Wichtig:** Version 0.2.0+ benötigt **KEINEN API-Key mehr!**
+
+```yaml
+log_level: "info"              # debug, info, warning, error
+enable_image_analysis: true    # Bildanalyse aktivieren
+```
+
+### 4. Erster Start - OAuth Setup
+
+1. **Addon starten** (Start-Button klicken)
+2. **Logs öffnen** (Log-Tab im Addon)
+3. **Du siehst einen Link** wie: `https://claude.ai/auth/...`
+4. **Link im Browser öffnen**
+5. **Mit deinem Claude Pro Account anmelden**
+6. **Fertig!** - Credentials werden gespeichert, bei jedem Neustart wiederverwendet
+
+**Beispiel Log-Output:**
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  FIRST TIME SETUP - AUTHENTICATION REQUIRED
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Claude CLI is not authenticated yet.
+
+INSTRUCTIONS:
+1. Watch the logs below for an authentication URL
+2. Open that URL in your browser
+3. Log in with your Claude account (needs Claude Pro)
+4. After successful auth, the addon will start automatically
+
+Starting authentication flow...
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[OAuth URL wird hier angezeigt...]
+```
+
+### 5. Fertig!
+
+- **Start on boot:** aktivieren (optional)
+- Service läuft auf Port **8099**
 
 ## Verwendung
 

@@ -1,7 +1,7 @@
 name: Claude Assistant
-version: "0.1.1"
+version: "0.2.0"
 slug: claude_assistant
-description: Claude Code CLI Integration for Home Assistant with image analysis
+description: Claude Code CLI Integration for Home Assistant - No API costs, uses Claude Pro tokens
 url: https://github.com/anthropics/claude-code
 arch:
   - aarch64
@@ -21,11 +21,9 @@ ports:
 ports_description:
   8099/tcp: Claude Assistant API
 options:
-  anthropic_api_key: ""
   log_level: "info"
   enable_image_analysis: true
 schema:
-  anthropic_api_key: str
   log_level: list(debug|info|warning|error)
   enable_image_analysis: bool
 map:

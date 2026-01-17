@@ -1,21 +1,108 @@
 #!/usr/bin/with-contenv bashio
 
-# Get configuration
-export ANTHROPIC_API_KEY=$(bashio::config 'anthropic_api_key')
+# ============================================================================
+# Claude Assistant - CLI Mode (No API Costs!)
+# Uses Claude Pro included tokens via CLI authentication
+# ============================================================================
+
+# Set HOME to /data so Claude CLI stores credentials there (persistent volume)
+export HOME=/data
+
+# Get configuration from Home Assistant
 export LOG_LEVEL=$(bashio::config 'log_level')
 export ENABLE_IMAGE_ANALYSIS=$(bashio::config 'enable_image_analysis')
 export SUPERVISOR_TOKEN="${SUPERVISOR_TOKEN}"
 export HOMEASSISTANT_URL="http://supervisor/core"
 
-bashio::log.info "Starting Claude Assistant..."
+bashio::log.info "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+bashio::log.info "  Claude Assistant - CLI Mode (No API Costs)"
+bashio::log.info "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 bashio::log.info "Log level: ${LOG_LEVEL}"
 bashio::log.info "Image analysis: ${ENABLE_IMAGE_ANALYSIS}"
+bashio::log.info "Credentials location: ${HOME}/.claude/"
 
-# Check if API key is set
-if bashio::config.is_empty 'anthropic_api_key'; then
-    bashio::log.warning "No Anthropic API key configured! Some features may not work."
+# ============================================================================
+# Check Claude CLI Authentication
+# ============================================================================
+
+CREDENTIALS_FILE="${HOME}/.claude/.credentials.json"
+
+if [ ! -f "$CREDENTIALS_FILE" ]; then
+    bashio::log.warning "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    bashio::log.warning "  FIRST TIME SETUP - AUTHENTICATION REQUIRED"
+    bashio::log.warning "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    bashio::log.warning ""
+    bashio::log.warning "Claude CLI is not authenticated yet."
+    bashio::log.warning ""
+    bashio::log.warning "INSTRUCTIONS:"
+    bashio::log.warning "1. Watch the logs below for an authentication URL"
+    bashio::log.warning "2. Open that URL in your browser"
+    bashio::log.warning "3. Log in with your Claude account (needs Claude Pro)"
+    bashio::log.warning "4. After successful auth, the addon will start automatically"
+    bashio::log.warning ""
+    bashio::log.warning "Starting authentication flow..."
+    bashio::log.warning "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    bashio::log.warning ""
+
+    # Run Claude CLI to trigger OAuth flow
+    # The CLI will print the authentication URL to stdout
+    # After user authenticates in browser, CLI will store credentials
+    claude || {
+        bashio::log.error "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+        bashio::log.error "  AUTHENTICATION FAILED"
+        bashio::log.error "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+        bashio::log.error "Could not complete authentication."
+        bashio::log.error "Please check:"
+        bashio::log.error "  - You have a Claude Pro account"
+        bashio::log.error "  - The authentication URL was accessible"
+        bashio::log.error "  - You completed the OAuth flow"
+        bashio::log.error ""
+        bashio::log.error "Restart the addon to try again."
+        exit 1
+    }
+
+    # Verify credentials were created
+    if [ ! -f "$CREDENTIALS_FILE" ]; then
+        bashio::log.error "Authentication completed but credentials file not found!"
+        bashio::log.error "Expected: $CREDENTIALS_FILE"
+        exit 1
+    fi
+
+    bashio::log.info "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    bashio::log.info "  AUTHENTICATION SUCCESSFUL! ✓"
+    bashio::log.info "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    bashio::log.info "Credentials saved to: $CREDENTIALS_FILE"
+    bashio::log.info "Future addon restarts will use these credentials."
+    bashio::log.info ""
+else
+    bashio::log.info "✓ Claude CLI already authenticated"
+    bashio::log.info "✓ Using existing credentials from: $CREDENTIALS_FILE"
 fi
 
-# Start the Python service
-bashio::log.info "Starting Claude service..."
+# ============================================================================
+# Verify Claude CLI is working
+# ============================================================================
+
+bashio::log.info "Verifying Claude CLI installation..."
+
+CLAUDE_VERSION=$(claude --version 2>&1 | head -1)
+if [ $? -eq 0 ]; then
+    bashio::log.info "✓ Claude CLI ready: $CLAUDE_VERSION"
+else
+    bashio::log.error "✗ Claude CLI not working!"
+    bashio::log.error "Output: $CLAUDE_VERSION"
+    exit 1
+fi
+
+# ============================================================================
+# Start the service
+# ============================================================================
+
+bashio::log.info "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+bashio::log.info "  Starting Claude Assistant Service"
+bashio::log.info "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+bashio::log.info "Mode: CLI (No API costs, uses Claude Pro tokens)"
+bashio::log.info "Port: 8099"
+bashio::log.info ""
+
 exec python3 /usr/local/bin/claude_service.py
