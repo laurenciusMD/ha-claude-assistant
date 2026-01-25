@@ -33,8 +33,8 @@ if bashio::config.has_value 'claude_credentials'; then
     CREDS=$(bashio::config 'claude_credentials')
     if [ -n "$CREDS" ]; then
         bashio::log.info "✓ Using credentials from addon configuration"
-        # Write credentials to file
-        echo "$CREDS" > "$CREDENTIALS_FILE"
+        # Write credentials to file WITHOUT trailing newline (echo -n)
+        echo -n "$CREDS" > "$CREDENTIALS_FILE"
         chmod 600 "$CREDENTIALS_FILE"
 
         # Debug: Verify what was written
