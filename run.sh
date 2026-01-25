@@ -62,7 +62,8 @@ if [ ! -f "$CREDENTIALS_FILE" ]; then
     # Run Claude CLI to trigger OAuth flow
     # The CLI will print the authentication URL to stdout
     # After user authenticates in browser, CLI will store credentials
-    claude || {
+    # Use echo to provide a simple input to trigger the auth flow
+    echo "hello" | claude --print 2>&1 || {
         bashio::log.error "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
         bashio::log.error "  AUTHENTICATION FAILED"
         bashio::log.error "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
