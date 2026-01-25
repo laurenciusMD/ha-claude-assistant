@@ -33,8 +33,15 @@ if bashio::config.has_value 'claude_credentials'; then
     CREDS=$(bashio::config 'claude_credentials')
     if [ -n "$CREDS" ]; then
         bashio::log.info "✓ Using credentials from addon configuration"
+        # Write credentials to file
         echo "$CREDS" > "$CREDENTIALS_FILE"
         chmod 600 "$CREDENTIALS_FILE"
+
+        # Debug: Verify what was written
+        WRITTEN_SIZE=$(wc -c < "$CREDENTIALS_FILE")
+        WRITTEN_FIRST=$(head -c 60 "$CREDENTIALS_FILE")
+        bashio::log.info "DEBUG: Wrote ${WRITTEN_SIZE} bytes to credentials file"
+        bashio::log.info "DEBUG: Content starts with: ${WRITTEN_FIRST}..."
     fi
 fi
 
@@ -93,6 +100,14 @@ if [ ! -f "$CREDENTIALS_FILE" ]; then
 else
     bashio::log.info "✓ Claude CLI already authenticated"
     bashio::log.info "✓ Using existing credentials from: $CREDENTIALS_FILE"
+
+    # Debug: Check credentials file content
+    if [ -f "$CREDENTIALS_FILE" ]; then
+        CREDS_SIZE=$(wc -c < "$CREDENTIALS_FILE")
+        CREDS_FIRST=$(head -c 50 "$CREDENTIALS_FILE")
+        bashio::log.info "DEBUG: Credentials file size: ${CREDS_SIZE} bytes"
+        bashio::log.info "DEBUG: First 50 chars: ${CREDS_FIRST}..."
+    fi
 fi
 
 # ============================================================================
@@ -103,7 +118,9 @@ bashio::log.info "Verifying Claude CLI installation..."
 
 if which claude > /dev/null 2>&1; then
     CLAUDE_PATH=$(which claude)
+    CLAUDE_VERSION=$(claude --version 2>&1 || echo "unknown")
     bashio::log.info "✓ Claude CLI found at: $CLAUDE_PATH"
+    bashio::log.info "✓ Claude CLI version: $CLAUDE_VERSION"
 else
     bashio::log.error "✗ Claude CLI not found in PATH!"
     exit 1
