@@ -289,7 +289,8 @@ Konzentriere dich NUR auf die tatsächliche Szene und beantworte diese Frage:
 
             cmd.append(prompt)
 
-            logger.debug(f"Running: {' '.join(cmd[:3])}...")
+            logger.info(f"Running Claude CLI: {CLAUDE_CLI} --print <prompt>")
+            logger.debug(f"Prompt: {prompt[:100]}...")
 
             # Run command with timeout to prevent hanging
             process = await asyncio.create_subprocess_exec(
@@ -308,13 +309,26 @@ Konzentriere dich NUR auf die tatsächliche Szene und beantworte diese Frage:
                 process.kill()
                 raise Exception("Claude CLI timeout after 30 seconds")
 
+            stdout_text = stdout.decode('utf-8').strip()
+            stderr_text = stderr.decode('utf-8').strip()
+
+            logger.info(f"Claude CLI returncode: {process.returncode}")
+            logger.debug(f"Claude CLI stdout length: {len(stdout_text)}")
+            logger.debug(f"Claude CLI stderr length: {len(stderr_text)}")
+
+            if stderr_text:
+                logger.warning(f"Claude CLI stderr: {stderr_text[:500]}")
+
             if process.returncode != 0:
-                error_msg = stderr.decode('utf-8')
-                logger.error(f"Claude CLI error: {error_msg}")
+                error_msg = f"Return code {process.returncode}. stderr: {stderr_text[:200]}, stdout: {stdout_text[:200]}"
+                logger.error(f"Claude CLI failed: {error_msg}")
                 raise Exception(f"Claude CLI failed: {error_msg}")
 
-            result = stdout.decode('utf-8').strip()
-            return result
+            if not stdout_text:
+                logger.error(f"Claude CLI returned empty response. stderr: {stderr_text[:200]}")
+                raise Exception("Claude CLI returned empty response")
+
+            return stdout_text
 
         except Exception as e:
             logger.error(f"Failed to run Claude CLI: {e}")
