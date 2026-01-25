@@ -1,5 +1,5 @@
 name: Claude Assistant
-version: "0.3.6"
+version: "0.3.7"
 slug: claude_assistant
 description: Claude Code CLI Integration for Home Assistant - No API costs, uses Claude Pro tokens
 url: https://github.com/anthropics/claude-code

@@ -31,7 +31,7 @@ RUN npm install -g @anthropic-ai/claude-code@latest
 # Verify Claude CLI installation
 RUN which claude && ls -la $(which claude)
 
-# Copy service files
+# Copy service files (v0.3.7 - debug logging added)
 COPY run.sh /
 COPY claude_service.py /usr/local/bin/
 COPY www /usr/local/bin/www
