@@ -25,8 +25,10 @@ RUN pip3 install --no-cache-dir --break-system-packages \
 
 # Install Claude CLI from official npm package
 # The package has a 'bin: claude' field that automatically creates /usr/local/bin/claude
+# Force reinstall to get latest version (2.1.19+)
 ENV NPM_CONFIG_UNSAFE_PERM=true
-RUN npm install -g @anthropic-ai/claude-code@latest
+RUN npm cache clean --force && \
+    npm install -g --force @anthropic-ai/claude-code@latest
 
 # Verify Claude CLI installation
 RUN which claude && ls -la $(which claude)

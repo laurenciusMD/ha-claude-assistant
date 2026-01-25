@@ -33,6 +33,11 @@ if bashio::config.has_value 'claude_credentials'; then
     CREDS=$(bashio::config 'claude_credentials')
     if [ -n "$CREDS" ]; then
         bashio::log.info "✓ Using credentials from addon configuration"
+
+        # Debug: Show what we received from config
+        RECEIVED_SIZE=${#CREDS}
+        bashio::log.info "DEBUG: Received ${RECEIVED_SIZE} bytes from config"
+
         # Write credentials to file WITHOUT trailing newline (echo -n)
         echo -n "$CREDS" > "$CREDENTIALS_FILE"
         chmod 600 "$CREDENTIALS_FILE"
@@ -42,6 +47,12 @@ if bashio::config.has_value 'claude_credentials'; then
         WRITTEN_FIRST=$(head -c 60 "$CREDENTIALS_FILE")
         bashio::log.info "DEBUG: Wrote ${WRITTEN_SIZE} bytes to credentials file"
         bashio::log.info "DEBUG: Content starts with: ${WRITTEN_FIRST}..."
+
+        # Check if sizes match expected
+        if [ "$WRITTEN_SIZE" -ne 451 ]; then
+            bashio::log.warning "WARNING: Credentials file size mismatch! Expected 451 bytes, got ${WRITTEN_SIZE}"
+            bashio::log.warning "This might cause authentication to fail."
+        fi
     fi
 fi
 
