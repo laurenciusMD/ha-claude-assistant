@@ -51,8 +51,11 @@ class ClaudeService:
         """Setup HTTP routes"""
         # API endpoints
         self.app.router.add_post('/api/chat', self.handle_chat)
+        self.app.router.add_options('/api/chat', self.handle_options)
         self.app.router.add_post('/api/analyze_image', self.handle_analyze_image)
+        self.app.router.add_options('/api/analyze_image', self.handle_options)
         self.app.router.add_post('/api/analyze_snapshot', self.handle_analyze_snapshot)
+        self.app.router.add_options('/api/analyze_snapshot', self.handle_options)
         self.app.router.add_get('/api/health', self.handle_health)
 
         # Test endpoint
@@ -140,6 +143,18 @@ class ClaudeService:
             await asyncio.Event().wait()
         except KeyboardInterrupt:
             logger.info("Shutting down...")
+
+    async def handle_options(self, request):
+        """Handle CORS preflight OPTIONS requests"""
+        return web.Response(
+            status=200,
+            headers={
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type',
+                'Access-Control-Max-Age': '3600'
+            }
+        )
 
     async def handle_health(self, request):
         """Health check endpoint"""
