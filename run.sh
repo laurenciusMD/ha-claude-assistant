@@ -22,6 +22,27 @@ bashio::log.info "Image analysis: ${ENABLE_IMAGE_ANALYSIS}"
 bashio::log.info "Credentials location: ${HOME}/.claude/"
 
 # ============================================================================
+# Repair corrupted Claude CLI config files
+# ============================================================================
+# A truncated/empty ~/.claude.json (e.g. after a crash or full disk) makes the
+# CLI abort with "JSON Parse error: Unexpected EOF". Validate the state files
+# and move corrupt ones aside so the CLI can regenerate them on next start.
+
+repair_json_file() {
+    local file="$1"
+    if [ -f "$file" ] && ! jq -e . "$file" > /dev/null 2>&1; then
+        local backup="${file}.corrupt.$(date +%Y%m%d%H%M%S)"
+        bashio::log.warning "Corrupted JSON detected in ${file} - moving to ${backup}"
+        bashio::log.warning "The Claude CLI will regenerate this file automatically."
+        mv "$file" "$backup"
+    fi
+}
+
+repair_json_file "${HOME}/.claude.json"
+repair_json_file "${HOME}/.claude/settings.json"
+repair_json_file "${HOME}/.claude/.credentials.json"
+
+# ============================================================================
 # Setup credentials from config (if provided)
 # ============================================================================
 
