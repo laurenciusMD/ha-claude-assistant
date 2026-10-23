@@ -1,0 +1,32 @@
+--- a/backend/src/routes/persons.js	2026-10-23 12:41:54.655761672 +0000
++++ b/backend/src/routes/persons.js	2026-10-23 12:41:54.695418177 +0000
+@@ -68,7 +68,8 @@
+       SELECT DISTINCT p.*
+       FROM persons p
+     `;
+-    const conditions = [`p.user_id = $1`];
++    // quarantined_at wird von scripts/personen-bereinigung.sql gesetzt (Nicht-Personen, Dubletten)
++    const conditions = [`p.user_id = $1`, `p.quarantined_at IS NULL`];
+     const params = [req.session.userId];
+     let paramIndex = 2;
+ 
+@@ -172,8 +173,9 @@
+     const result = await postgresService.query(
+       `SELECT id, canonical_name, aliases, description, profession, photo_url
+        FROM persons
+-       WHERE canonical_name ILIKE $1
+-          OR EXISTS (SELECT 1 FROM unnest(aliases) AS alias WHERE alias ILIKE $1)
++       WHERE quarantined_at IS NULL
++         AND (canonical_name ILIKE $1
++          OR EXISTS (SELECT 1 FROM unnest(aliases) AS alias WHERE alias ILIKE $1))
+        ORDER BY canonical_name
+        LIMIT $2`,
+       [`%${q}%`, safeParseInt(limit, 10)]
+@@ -239,6 +241,7 @@
+         LEFT JOIN person_relationships pr ON
+           (pr.person_a_id = LEAST(p1.id, p2.id) AND pr.person_b_id = GREATEST(p1.id, p2.id) AND pr.relationship_type = 'distinct')
+         WHERE pr.id IS NULL  -- Not marked as distinct
++        AND p1.quarantined_at IS NULL AND p2.quarantined_at IS NULL
+         AND (
+           -- Exact name match
+           LOWER(p1.canonical_name) = LOWER(p2.canonical_name)

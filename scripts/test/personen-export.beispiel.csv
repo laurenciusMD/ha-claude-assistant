@@ -1,0 +1,48 @@
+id,name,aliases,emails,party,source,created_at,created_by
+6233e0fb-b42a-40bf-a387-ca96c25bb131,"A- Baum, Christina",{},[],AfD,NorthData,2026-01-02 10:00:00,
+0294f653-170d-41d4-a2cd-146f4fd48831,Christina Baum,"{""Baum, Christina""}","[{""value"":""c.baum@example.org""}]",AfD,,2025-12-01 10:00:00,1
+3d0522a8-2940-43c5-9a28-6c4cab45cc90,Dr. Christina Baum (MdB),{},[],,,2026-02-01 10:00:00,
+5427408e-fc33-4563-b1c2-0abc83cf44f9,Christina Maria Baum,{},[],,Wikipedia,2026-02-03 10:00:00,
+c11d11cd-5d2c-4f8a-9f1a-4262b84eee79,Christina Baum,{},[],CDU,,2026-02-04 10:00:00,
+ae99bdb2-e37b-4746-83f7-4e33e68f6ff7,"Müller, Hans",{},[],,NorthData,2026-01-05 10:00:00,
+4cecc78d-7762-4f12-aac1-9a9864ce2a56,Hans Mueller,{},[],,,2026-01-06 10:00:00,1
+8eea8976-82fc-4864-9327-2ff0b5131c09,Hans Müller,{},[],,,2026-01-07 10:00:00,2
+442aad3f-ca0b-4205-8ce1-fe899ecde424,info@afd-sachsen.de,{},[],,,2026-01-08 10:00:00,
+3b533b20-a3f7-41ce-8abf-8d0f18833e60,a,{},[],,,2026-01-08 10:00:00,
+8bcb9d37-6235-4073-9861-73e9b75d30db,30 Tagen,{},[],,,2026-01-08 10:00:00,
+138260c0-4582-4da0-b7c2-ee563e12dc67,AfD Bundesparteitag 2024,{},[],,,2026-01-08 10:00:00,
+3602cf48-0740-4266-877a-de4170195e19,Landesparteitag Sachsen-Anhalt,{},[],,,2026-01-08 10:00:00,
+4bed164c-b170-47b5-8d38-4d5331bf73c9,Kontrakultur Halle e.V.,{},[],,,2026-01-08 10:00:00,
+066f14e7-b88b-4229-bdaa-bfb55e84d44c,Landesamt für Verfassungsschutz,{},[],,,2026-01-08 10:00:00,
+14b8dd0b-0ae4-4cfa-a9be-aa75bde349c1,Markus Lanz,{},[],,,2026-01-08 10:00:00,1
+dfb67f68-5ec3-4aa9-a40e-27c3cc83570a,MDR Sachsenspiegel,{},[],,,2026-01-08 10:00:00,
+12805875-1073-4f0e-864e-85554c1c778b,Kundenservice,{},[],,,2026-01-08 10:00:00,
+bc7125cf-b57a-4f7e-a786-186e8360b200,Newsletter Team,{},[],,,2026-01-08 10:00:00,
+b76f676d-cb20-4c89-aa56-9eee1d4ea264,Merkel,{},[],,,2026-01-08 10:00:00,
+55541d96-db87-443d-bed0-d366369b93ad,Angela,{},[],,,2026-01-08 10:00:00,
+39a8b6fe-076f-40ee-81b4-be423a8ed76e,MERKEL Angela,{},[],CDU,,2026-01-08 10:00:00,
+b83c44ae-b294-48df-87cc-866e5ebb23cd,Angela Merkel,{},[],CDU,Wikipedia,2026-01-08 10:00:00,1
+5fd60bf9-e014-4263-a277-25287bc849f8,Schmidt Jan Wenzel,{},[],AfD,,2026-01-08 10:00:00,
+15203ca2-1dc5-48c9-b766-f9c9c8434c76,Jan Wenzel Schmidt,{},[],AfD,NorthData,2026-01-08 10:00:00,1
+2736fa6e-0eca-4a38-83fd-a0f9020b199f,hans und erika müller,{},[],,,2026-01-08 10:00:00,
+2d724588-8f71-4fc9-ac80-c5c55261a6f0,der Vorsitzende,{},[],,,2026-01-08 10:00:00,
+24e9498b-f757-4f41-971f-34bb1b4fd9c2,Götz Kubitschek - Antaios,{},[],,,2026-01-08 10:00:00,
+eb8344fb-47b7-40a8-8fac-8fc6893fe4a5,Götz Kubitschek,{},[],,Wikipedia,2026-01-08 10:00:00,1
+64b122a7-4980-405b-a539-c202eea696b4,Hans-Thomas Tillschneider,{},[],AfD,,2026-01-08 10:00:00,1
+98388c63-3541-49d5-a30a-3cbb996ed2c0,"Tillschneider, Hans-Thomas",{},[],,NorthData,2026-01-08 10:00:00,
+af30078f-c458-448d-922c-b866bda081f9,https://www.example.de,{},[],,,2026-01-08 10:00:00,
+c969c101-b66e-4b8c-98f3-a1a72a1af41c,+49 341 123456,{},[],,,2026-01-08 10:00:00,
+818d58c1-bae9-46fc-a054-6e4fa9976e24,12.03.2024,{},[],,,2026-01-08 10:00:00,
+b2b1947d-6d08-40b7-b96a-bcd25c179edf,Peter Bank,{},[],,,2026-01-08 10:00:00,
+f91f5466-c94f-4799-a27d-e9db72dacef3,Deutsche Bank AG,{},[],,,2026-01-08 10:00:00,
+4cd893ea-3dae-4c43-b6d0-500dc68d0d2b,Philip Stein,"{""Philipp Stein""}",[],,,2026-01-08 10:00:00,1
+dfae72d2-3108-40d7-9a34-b4563d4b0df2,Philipp Stein,{},[],,,2026-01-08 10:00:00,
+bf0a4547-42ca-40bb-a966-7b0f9dfaa731,C. Baum,{},[],,,2026-01-08 10:00:00,
+de8c222d-dd12-445f-868b-7cb9959a2952,Christina Baum und Hans Müller,{},[],,,2026-01-08 10:00:00,
+5e901947-aede-4b48-a8ea-d6d3a1ec931a,Sommerinterview 2025,{},[],,,2026-01-08 10:00:00,
+98f22d3c-e9ce-4692-8de1-67d9c6f84da5,Herr Prof. Dr. med. Karl-Heinz Weber,{},[],,,2026-01-08 10:00:00,
+b96d8046-ce8d-4383-9b49-cd2f3d35bbb1,Rechtsanwalt Luca Hart,{},[],,,2026-01-08 10:00:00,
+edf0d82c-2f46-418c-ae11-597e833ed5d3,,{},[],,,2026-01-08 10:00:00,
+35bd9c32-a431-49c9-96b1-9cc759407a62,Xyzzy,{},[],,,2026-01-08 10:00:00,
+ecde5a4b-05b2-4401-a0c3-e6a8317b996a,Kai Mehliß,{},[],,,2026-01-08 10:00:00,
+5c32cde6-eab4-433a-85b1-b85566dfb64e,"Mehliss, Kai",{},[],,NorthData,2026-01-08 10:00:00,
