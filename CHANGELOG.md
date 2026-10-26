@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.8 (2026-09-14)
+
+### Fixes
+- 🛡️ Self-healing for corrupted Claude CLI config files: on startup, `~/.claude.json`,
+  `~/.claude/settings.json` and `~/.claude/.credentials.json` are validated with `jq`.
+  Corrupted files (e.g. truncated after a crash or full disk, causing
+  "JSON Parse error: Unexpected EOF") are moved aside as `*.corrupt.<timestamp>`
+  backups so the CLI can regenerate them instead of aborting.
+
+---
+
 ## 0.2.0 (2026-01-17)
 
 ### 🎉 MAJOR UPDATE - 100% CLI Mode (Zero API Costs!)
